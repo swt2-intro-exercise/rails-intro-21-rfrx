@@ -16,12 +16,14 @@ require 'rails_helper'
   end
 
   it "should save the author" do 
-  visit new_author_path
-  page.fill_in 'author[first_name]', with: 'Alan'
-  page.fill_in 'author[last_name]', with: 'Turing'
-  page.fill_in 'author[homepage]', with: 'http://wikipedia.org/Alan_Turing'
-  find('input[type="submit"]').click
+    visit new_author_path
+    page.fill_in 'author[first_name]', with: 'Alan'
+    page.fill_in 'author[last_name]', with: 'Turing'
+    page.fill_in 'author[homepage]', with: 'http://wikipedia.org/Alan_Turing'
+    find('input[type="submit"]').click
+    expect(Author.count).to eq(1)
   end
+
   it "should not be valid without last name" do
     @author = Author.new(first_name: "Alan", homepage: 'http://wikipedia.org/Alan_Turing')
     expect(@author).to_not be_valid
@@ -31,4 +33,13 @@ require 'rails_helper'
     @author = Author.new(first_name: "Alan", last_name: "Turing", homepage: 'http://wikipedia.org/Alan_Turing')
     expect(@author).to be_valid
   end
+
+  it "should show errors when creating" do
+    visit new_author_path
+    page.fill_in 'author[first_name]', with: 'Alan'
+    page.fill_in 'author[homepage]', with: 'http://wikipedia.de/Alan_Turing'
+    find('input[type="submit"]').click
+    expect(page).to have_text("Last name can't be blank")
+  end
+
 end
