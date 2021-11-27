@@ -34,20 +34,13 @@ describe "New paper page", type: :feature do
       expect(@paper).to be_valid
     end
   
-    it "should show errors during creation without title" do
+    it "should show errors during creation" do
       visit new_paper_path
-      page.fill_in 'paper[venue]', with: "Mind 49: 433-460"
-      page.fill_in 'paper[year]', with: 1950
-      find('input[type="submit"]').click
-      expect(page).to have_text("Title can't be blank")
-    end
-
-    it "should show errors during creation without venue" do
-        visit new_paper_path
-        page.fill_in 'paper[title]', with: "COMPUTING MACHINERY AND INTELLIGENCE"
-        page.fill_in 'paper[year]', with: 1950
         find('input[type="submit"]').click
+        expect(page).to have_text("Title can't be blank")
         expect(page).to have_text("Venue can't be blank")
+        expect(page).to have_text("Year can't be blank")
+        expect(page).to have_text("Year is not a number")
       end
 
   end
