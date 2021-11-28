@@ -43,4 +43,9 @@ describe "New paper page", type: :feature do
         expect(page).to have_text("Year is not a number")
       end
 
+      it "should allow to select paper authors from a multiple select box" do
+        visit new_paper_path
+        expect(page).to have_field('paper[author_ids][]')
+      end
+
   end
